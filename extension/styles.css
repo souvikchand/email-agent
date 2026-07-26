@@ -1,0 +1,23 @@
+/* dummy */
+
+.email-agent-btn{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:99999999;
+    padding:12px 18px;
+    background:#1a73e8;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.email-agent-btn:hover{
+    opacity:0.9;
+}
+
+.email-agent-btn:active{
+    transform:scale(0.96);
+}
