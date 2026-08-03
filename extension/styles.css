@@ -21,3 +21,67 @@
 .email-agent-btn:active{
     transform:scale(0.96);
 }
+
+#cyline-panel{
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 250px;
+    height: 80vh;
+    background: white;
+    border-left: 1px solid #ddd;
+    z-index: 999999;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 10px rgba(0,0,0,.15);
+    padding:20px;
+    font-family: Arial, sans-serif;
+    opacity: 85%;
+}
+
+#cyline-panel.open{
+    right:0;
+}
+
+#cyline-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+    border-bottom:1px solid #ddd;
+    font-weight:bold;
+}
+
+#cyline-close{
+    cursor:pointer;
+    border:none;
+    background:none;
+    font-size:18px;
+}
+
+#cyline-content{
+    padding:20px;
+    overflow-y:auto;
+}
+
+.cyline-loading{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:250px;
+    gap:15px;
+}
+
+.cyline-spinner{
+    width:40px;
+    height:40px;
+    border:4px solid #ddd;
+    border-top:4px solid #1a73e8;
+    border-radius:50%;
+    animation:cyline-spin 1s linear infinite;
+}
+
+@keyframes cyline-spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}

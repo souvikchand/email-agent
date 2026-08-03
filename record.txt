@@ -1,0 +1,4 @@
+use scrape to get fields
+use document.querySelector() to get data
+there is a popup ingmail that already have fields, so take from there 
+extract_subject() extractEmail() extractItems() this 3 will do the job
