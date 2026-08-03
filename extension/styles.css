@@ -28,14 +28,15 @@
     right: -420px;
     width: 250px;
     height: 80vh;
+    display: flex;
+    flex-direction: column;
     background: white;
     border-left: 1px solid #ddd;
-    z-index: 999999;
-    transition: right 0.3s ease;
     box-shadow: -2px 0 10px rgba(0,0,0,.15);
-    padding:20px;
+    z-index: 999999;
+    transition: right .3s ease;
     font-family: Arial, sans-serif;
-    opacity: 85%;
+    opacity: .85;
 }
 
 #cyline-panel.open{
@@ -43,12 +44,12 @@
 }
 
 #cyline-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px;
-    border-bottom:1px solid #ddd;
-    font-weight:bold;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
 }
 
 #cyline-close{
@@ -59,8 +60,10 @@
 }
 
 #cyline-content{
-    padding:20px;
-    overflow-y:auto;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    min-height: 0;
 }
 
 .cyline-loading{

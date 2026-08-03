@@ -222,7 +222,7 @@ function createSidePanel() {
     panel.id = "cyline-panel";
     panel.innerHTML = `
         <div id="cyline-header">
-            <span>Cyline AI</span>
+            <span>testing </span>
             <button id="cyline-close">✕</button>
         </div>
 
@@ -254,11 +254,6 @@ function displayResponse(result){
     panel.querySelector("#cyline-content").innerHTML = `
         <p><b>Status</b></p>
         <p>${result.status}</p>
-
-        <hr>
-
-        <p><b>Message</b></p>
-        <p>${result.message}</p>
 
         <hr>
 
