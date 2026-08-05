@@ -7,7 +7,7 @@ Your job is to summarize emails for busy professionals.
 
 Rules:
 - Return ONLY the final answer.
-- Maximum 35 words.
+- Maximum 50 words.
 - Ignore greetings.
 - Ignore signatures.
 - Ignore addresses.
@@ -19,7 +19,7 @@ Subject:
 {email["subject"]}
 
 Body:
-{email["body"]}
+{email["thread"]}
 
 Summary:
 """

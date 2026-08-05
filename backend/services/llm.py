@@ -11,7 +11,7 @@ llm = Llama(
 
 def generate(
     prompt: str,
-    max_tokens: int = 60,
+    max_tokens: int = 100,
     temperature: float = 0.2,
     top_p: float = 0.8,
     stop: list[str] | None = None,

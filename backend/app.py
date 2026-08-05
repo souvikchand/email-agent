@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from services.llm import generate
 from prompts.summarize import build_summary_prompt
-from utils.email_cleaner import remove_signature, remove_reasoning
+from utils.email_cleaner import remove_signature, remove_reasoning, clean_thread
 
 app = FastAPI()
 
@@ -31,7 +31,7 @@ async def receive_email(data: dict):
 
 @app.post("/summarize")
 async def summarize(data: dict):
-    data['body'] = remove_signature(data['body'])
+    data['thread'] = clean_thread(data['thread'])
     prompt = build_summary_prompt(data)
     answer = generate(prompt)
     answer = remove_reasoning(answer)

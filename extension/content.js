@@ -2,6 +2,10 @@ console.log("Email Agent Loaded");
 
 let button = null;
 let timer = null;
+const THREAD_SELECTORS = [
+    ".kv",
+    ".h7.bg.ie"
+];
 
 function waitForPopup() {
     return new Promise(resolve => {
@@ -26,7 +30,10 @@ function showButton() {
         // const detailsButton = document.querySelector(".ajy");
         // detailsButton.click();
         // await waitForPopup();
-        const email = extractEmail();
+        const email = {
+            subject: extractSubject(),
+            thread : extractThread()
+        }
         sendToBackend(email);
         //alert("Button Clicked");
         // detailsButton.click();
@@ -88,107 +95,81 @@ function parsePeople(container) {
     return people;
 }
 
-function extractEmail() {
+function extractSubject(){
     const subject = document.querySelector("h2.hP")?.innerText.trim() || "";
-    const bodyElement = document.querySelector(".a3s.aiL");
-    let body = "";
+    return subject
+}
 
-    if (bodyElement) {
-        const quote = bodyElement.querySelector(".gmail_quote");
-        if (quote)
-            quote.remove();
 
-        body = bodyElement.innerText.trim();
-    }
+function extractThread() {
+    // Conversation order: oldest -> newest
+    const emailNodes = [
+        ...document.querySelectorAll(".kv"),
+        ...document.querySelectorAll(".h7.bg.ie")
+    ];
 
+    return emailNodes.map(node => extractEmail(node));
+}
+
+
+function extractEmail(emailNode) {
+    // ---------------- Metadata ----------------
     const date =
-        document.querySelector(".g3")?.getAttribute("title") ||
-        document.querySelector(".g3")?.innerText ||
+        emailNode.querySelector(".g3")?.getAttribute("title") ||
+        emailNode.querySelector(".g3")?.innerText ||
         "";
 
-    const senderElement = document.querySelector(".gD");
+    const senderElement = emailNode.querySelector(".gD");
+
     const from = senderElement
         ? {
             name: senderElement.innerText.trim(),
-            email: senderElement.getAttribute("email")
+            email: senderElement.getAttribute("email") || ""
         }
         : null;
 
-    const recipients = [...document.querySelectorAll(".hb .g2")].map(el => ({
+    const recipients = [
+        ...emailNode.querySelectorAll(".hb .g2")
+    ].map(el => ({
         name: el.innerText.trim(),
-        email: el.getAttribute("email")
+        email: el.getAttribute("email") || ""
     }));
 
+    // ---------------- Body ----------------
+    let body = "";
+
+    // New Gmail layout (latest mail)
+    const newBody = emailNode.querySelector(".a3s.aiL");
+
+    if (newBody) {
+        const clone = newBody.cloneNode(true);
+        clone.querySelectorAll(".gmail_quote").forEach(q => q.remove());
+        body = clone.innerText.trim();
+
+    } else {
+        // Older Gmail layout
+        const clone = emailNode.cloneNode(true);
+        clone.querySelectorAll(".gmail_quote").forEach(q => q.remove());
+        body = clone.innerText;
+
+        // Remove sender/date shown at top
+        if (from?.name)
+            body = body.replace(from.name, "");
+
+        if (date)
+            body = body.replace(date, "");
+
+        body = body.trim();
+    }
+
     return {
-        subject,
         date,
         from,
         recipients,
         body,
         quoted: ""
-
     };
 }
-
-
-// function extractEmail() {
-//     const subject = document.querySelector("h2.hP")?.innerText.trim() || "";
-
-//     const bodyElement = document.querySelector(".a3s.aiL");
-//     let body = "";
-//     if(bodyElement){
-//         const quote = bodyElement.querySelector(".gmail_quote");
-//         if(quote)
-//             quote.remove();
-//         body = bodyElement.innerText.trim();
-//     }  
-//     //not adding Quoted thing right now
-
-//     const date =
-//         document.querySelector("span.g3")?.getAttribute("title")
-//         ||
-//         document.querySelector("span.g3")?.innerText
-//         ||
-//         "";
-//     // const sender = document.querySelector("span.gD")?.getAttribute("email")
-//     // const cc = document.querySelector("span.ATvwCb")?.getAttribute("email")
-//     // const people = extractRecipients();
-//     const info = {};
-//     document.querySelectorAll("table.ajC tr").forEach(row => {
-//         const key = row.querySelector("th .gI")
-//             ?.innerText
-//             .replace(":", "")
-//             .trim()
-//             .toLowerCase();
-//         const td = row.querySelector("td");
-
-//         if (!key || !td)
-//             return;
-
-//         switch (key) {
-//             case "from":
-//             case "to":
-//             case "cc":
-//             case "bcc":
-//                 info[key] = parsePeople(td);
-//                 break;
-//             default:
-//                 info[key] = td.innerText.trim();
-//         }
-
-//     });
-//     return {
-//         subject: subject,
-//         date: info.date||date,
-//         body: body,
-//         quoted: "",
-//         from: info.from?.[0] || null,
-//         to: info.to || [],
-//         cc: info.cc || [],
-//         bcc: info.bcc || []
-//     };
-
-// }
 
 async function sendToBackend(emailData) {
     // console.log("Sending:", emailData);

@@ -61,6 +61,11 @@ def remove_signature(body: str) -> str:
             cut = min(cut, idx)
     return body[:cut].strip()
 
+def clean_thread(thread: list) -> list:
+    for email in thread:
+        if "body" in email:
+            email["body"] = remove_signature(email["body"])
+    return thread
 
 def remove_reasoning(text: str) -> str:
     cut = len(text)
