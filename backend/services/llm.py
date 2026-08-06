@@ -3,7 +3,7 @@ import time
 
 llm = Llama(
     model_path=r"D:\Cyline\models\Qwen3-8B-Q4_K_M.gguf",   # Change to your path
-    n_ctx=1024,
+    n_ctx=2048,
     n_threads=6,
     verbose=False,
     enable_thinking=False,
@@ -35,5 +35,4 @@ def generate(
     print(f"[LLM] {elapsed:.2f}s")
 
     text = response["choices"][0]["text"].strip()
-
     return text

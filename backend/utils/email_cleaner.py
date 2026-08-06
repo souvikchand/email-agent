@@ -1,3 +1,4 @@
+import json
 SIGNATURE_MARKERS = [
     # Common closings
     "thanks",
@@ -35,6 +36,8 @@ THINKING_MARKERS = [
     "\nOkay",
     "\nOK",
     "\nLet me",
+    "\nLet's see",
+    "\nI will",
     "\nFirst",
     "\nThe user wants",
     "\nI need to",
@@ -75,3 +78,26 @@ def remove_reasoning(text: str) -> str:
             cut = min(cut, idx)
 
     return text[:cut].strip()
+
+def extract_json(text: str):
+    # Remove markdown fences if present
+    text = text.replace("```json", "").replace("```", "")
+
+    # Find the first JSON object
+    start = text.find("{")
+    if start == -1:
+        raise ValueError("No JSON object found.")
+
+    depth = 0
+
+    for i in range(start, len(text)):
+        if text[i] == "{":
+            depth += 1
+        elif text[i] == "}":
+            depth -= 1
+
+            if depth == 0:
+                json_str = text[start:i + 1]
+                return json.loads(json_str)
+
+    raise ValueError("Incomplete JSON.")

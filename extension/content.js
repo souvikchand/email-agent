@@ -215,6 +215,11 @@ function createSidePanel() {
     document.getElementById("cyline-close").addEventListener("click", () => {
         hidePanel();
     });
+    const taskButton = document.createElement("button");
+    taskButton.innerText = "Tasks";
+    taskButton.id = "taskButton";
+    panel.appendChild(taskButton);
+    
     return panel;
 }
 
@@ -266,4 +271,58 @@ function displayError(error){
         <p>${error.message}</p>
     `;
     showPanel();
+}
+
+async function getTasks(emailData) {
+    const response = await fetch("http://127.0.0.1:8000/tasks", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(emailData)
+    });
+    return await response.json();
+}
+
+let cachedTasks = null;
+taskButton.onclick = async () => {
+    if (!cachedTasks) {
+        cachedTasks = await getTasks(emailData);
+    }
+    taskButton.innerText = `Tasks (${cachedTasks.count})`;
+    renderTaskTable(cachedTasks.tasks);
+};
+
+function renderTaskTable(tasks) {
+    let old = document.getElementById("taskTable");
+    if (old)
+        old.remove();
+
+    const table = document.createElement("table");
+    table.id = "taskTable";
+
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th>Assignee</th>
+                <th>Task</th>
+                <th>Due</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    `;
+
+    const tbody = table.querySelector("tbody");
+    tasks.forEach(task => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${task.assignee}</td>
+            <td>${task.task}</td>
+            <td>${task.due_date ?? "None"}</td>
+            <td>${task.status}</td>
+        `;
+        tbody.appendChild(row);
+    });
+    document.getElementById("sidePanel").appendChild(table);
 }
