@@ -1,0 +1,118 @@
+function createSidePanel() {
+    let panel = document.getElementById("cyline-panel");
+    if (panel) return panel;
+    panel = document.createElement("div");
+    panel.id = "cyline-panel";
+    panel.innerHTML = `
+        <div id="cyline-header">
+            <span>testing </span>
+            <button id="cyline-close">✕</button>
+        </div>
+
+        <div id="cyline-content">
+            Waiting...
+        </div>
+    `;
+    document.body.appendChild(panel);
+    document.getElementById("cyline-close").addEventListener("click", () => {
+        hidePanel();
+    });
+    
+    return panel;
+}
+
+function showPanel() {
+    const panel = createSidePanel();
+    panel.classList.add("open");
+}
+
+function hidePanel() {
+    const panel = document.getElementById("cyline-panel");
+
+    if (panel)
+        panel.classList.remove("open");
+}
+
+function displayResponse(result){
+    const panel = createSidePanel();
+    panel.querySelector("#cyline-content").innerHTML = `
+        <p><b>Status</b></p>
+        <p>${result.status}</p>
+
+        <hr>
+
+        <p><b>Subject</b></p>
+        <p>${result.summary}</p>
+    `;
+    showPanel();
+}
+
+function showLoading() {
+    const panel = createSidePanel();
+    panel.querySelector("#cyline-content").innerHTML = `
+        <div class="cyline-loading">
+            <div class="cyline-spinner"></div>
+            <p>Analyzing email...</p>
+        </div>
+    `;
+
+    showPanel();
+}
+
+function displayError(error){
+    const panel = createSidePanel();
+
+    panel.querySelector("#cyline-content").innerHTML = `
+        <h3>Something went wrong</h3>
+
+        <p>${error.message}</p>
+    `;
+    showPanel();
+}
+
+function renderTaskTable(tasks, count) {
+    const panel = createSidePanel();
+    const content = panel.querySelector("#cyline-content");
+    if (!content) {
+        console.error("renderTaskTable: #cyline-content not found");
+        return;
+    }
+
+    // This removes the loading spinner
+    content.innerHTML = "";
+
+    // Total tasks
+    const countText = document.createElement("p");
+    countText.id = "taskCount";
+    countText.innerHTML = `<b>Total tasks:</b> ${count}`;
+    content.appendChild(countText);
+
+    // Table
+    const table = document.createElement("table");
+    table.id = "taskTable";
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th>Assignee</th>
+                <th>Task</th>
+                <th>Due</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    `;
+
+    const tbody = table.querySelector("tbody");
+    tasks.forEach(task => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${task.assignee}</td>
+            <td>${task.task}</td>
+            <td>${task.due_date ?? "None"}</td>
+            <td>${task.status}</td>
+        `;
+        tbody.appendChild(row);
+    });
+    content.appendChild(table);
+    showPanel();
+}

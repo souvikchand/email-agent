@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Email agent",
-  "version": "1.0",
+  "version": "1.0.82",
   "description": "A brief description of my extension",
   "permissions": ["storage"],
   "host_permissions": [
@@ -11,7 +11,13 @@
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*"],
-      "js": ["content.js"],
+      "js": [
+        "action.js",
+        "api.js",
+        "extractor.js",
+        "panel.js",
+        "content.js"
+      ],
       "css": ["styles.css"]
     }
   ],

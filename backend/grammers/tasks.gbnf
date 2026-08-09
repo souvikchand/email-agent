@@ -1,0 +1,25 @@
+root ::= object
+
+object ::= "{" ws key-tasks ws ":" ws array ws "}"
+
+key-tasks ::= q "tasks" q
+
+array ::= "[" ws "]" | "[" ws task (ws "," ws task)* ws "]"
+
+task ::= "{" ws q "assignee" q ws ":" ws string ws "," ws q "task" q ws ":" ws string ws "," ws q "due_date" q ws ":" ws (string | "null") ws "," ws q "status" q ws ":" ws status ws "}"
+
+status ::= q "pending" q | q "completed" q | q "in progress" q
+
+string ::= q chars q
+
+chars ::= "" | char chars
+
+char ::= [^"\\] | "\\" escape
+
+escape ::= ["\\/bfnrt] | "u" hex hex hex hex
+
+hex ::= [0-9a-fA-F]
+
+q ::= "\""
+
+ws ::= [ \t\n\r]*
