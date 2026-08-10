@@ -1,4 +1,4 @@
-version: 0.7 \
+version: 1.0.2 \
 author: zd \
 older versions : 
 ```
@@ -11,10 +11,11 @@ older versions :
 0.7 : change in UI, button becomes scalable
 0.7.1 : add tasks feature in frontend
 1.0.1 : task feature is added. with specified grammer for model
+1.0.2 : UI fix for drop down
 ```
 ✅ Thread extraction \
 ✅ Whole-thread summarization \
-🔜 Task extraction \
+✅ Task extraction \
 🔜 Response-time optimization (persistent model, prompt cleanup, streaming) \
 🔜 Vector database for semantic search \
 🔜 Chat over previous email threads \

@@ -36,12 +36,8 @@ function hidePanel() {
 function displayResponse(result){
     const panel = createSidePanel();
     panel.querySelector("#cyline-content").innerHTML = `
-        <p><b>Status</b></p>
-        <p>${result.status}</p>
-
         <hr>
-
-        <p><b>Subject</b></p>
+        <p><b>Summary</b></p>
         <p>${result.summary}</p>
     `;
     showPanel();

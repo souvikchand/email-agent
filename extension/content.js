@@ -2,6 +2,7 @@ console.log("Email Agent Loaded");
 
 let button = null;
 let timer = null;
+let emailAgentContainer = null;
 const THREAD_SELECTORS = [
     ".kv",
     ".h7.bg.ie"
@@ -29,37 +30,15 @@ function waitForPopup() {
     });
 }
 
-// function showButton() {
-//     if (button) return;
-//     button = document.createElement("button");
-//     button.innerText = "Summarize";
-//     button.className = "email-agent-btn";
-
-//     button.onclick = onActionButtonClick;
-//     // button.onclick = async () => {
-//     //     console.log("Button Clicked");
-//     //     const email = {
-//     //         subject: extractSubject(),
-//     //         thread : extractThread()
-//     //     }
-//     //     state.currentEmail = email;
-//     //     await getSummary(email);
-//     //     // sendToBackend(email);
-//     //     //alert("Button Clicked");
-//     //     // detailsButton.click();
-//     //     console.log(email)
-//     // };
-
-//     document.body.appendChild(button);
-//     console.log("Button Added");
-// }
 
 function showButton() {
     if (button) return;
     // Container
-    const container = document.createElement("div");
+    // const container = document.createElement("div");
+    emailAgentContainer = document.createElement("div");
+    emailAgentContainer.className = "email-agent-container";
     // container.id = "email-agent-container";
-    container.className = "email-agent-container";
+    // container.className = "email-agent-container";
 
     // Main action button
     button = document.createElement("button");
@@ -88,10 +67,10 @@ function showButton() {
     };
 
     // Add both buttons to container
-    container.appendChild(button);
-    container.appendChild(dropdownButton);
+    emailAgentContainer.appendChild(button);
+    emailAgentContainer.appendChild(dropdownButton);
 
-    document.body.appendChild(container);
+    document.body.appendChild(emailAgentContainer);
 
     // -------------------------
     // Action menu
@@ -124,33 +103,20 @@ function showButton() {
 
             // Close menu
             menu.style.display = "none";
-
             console.log("Current action:", state.currentAction);
         };
-
         menu.appendChild(item);
     });
-
-    container.appendChild(menu);
-
+    emailAgentContainer.appendChild(menu);
     console.log("Button Added");
 }
 
-// function toggleActionMenu() {
-//     const menu = document.getElementById("email-agent-action-menu");
 
-//     if (!menu) return;
-
-//     if (menu.style.display === "block") {
-//         menu.style.display = "none";
-//     } else {
-//         menu.style.display = "block";
-//     }
-// }
 
 function hideButton() {
-    if (!button) return;
-    button.remove();
+    if (!emailAgentContainer) return;
+    emailAgentContainer.remove();
+    emailAgentContainer = null;
     button = null;
     console.log("Button Removed");
 }
