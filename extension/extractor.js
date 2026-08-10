@@ -32,7 +32,8 @@ function extractThread() {
     // Conversation order: oldest -> newest
     const emailNodes = [
         ...document.querySelectorAll(".kv"),
-        ...document.querySelectorAll(".h7.bg.ie")
+        ...document.querySelectorAll(".h7.bg.ie"),
+        ...document.querySelectorAll(".h7.ie")
     ];
 
     return emailNodes.map(node => extractEmail(node));

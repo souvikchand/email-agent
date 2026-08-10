@@ -7,7 +7,6 @@ from services.llm import generate, get_llm, get_tasks_grammar
 from prompts.summarize import build_summary_prompt
 from utils.email_cleaner import remove_signature, remove_reasoning, clean_thread
 from utils.email_cleaner import extract_json
-# from provider import generate
 from prompts.task import TASK_PROMPT
 
 app = FastAPI()
@@ -73,9 +72,16 @@ async def extract_tasks(data: dict):
         print("\n========== EXTRACTED TASKS ==========")
         print(tasks)
         print("====================================\n")
+        if isinstance(tasks, dict):
+            task_list = tasks.get("tasks", [])
+        elif isinstance(tasks, list):
+            task_list = tasks
+        else:
+            task_list = []
+
         return JSONResponse(content={
-            "tasks": tasks,
-            "count": len(tasks)
+            "tasks": task_list,
+            "count": len(task_list)
         })
 
     except Exception as e:

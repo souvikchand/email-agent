@@ -34,11 +34,8 @@ function waitForPopup() {
 function showButton() {
     if (button) return;
     // Container
-    // const container = document.createElement("div");
     emailAgentContainer = document.createElement("div");
     emailAgentContainer.className = "email-agent-container";
-    // container.id = "email-agent-container";
-    // container.className = "email-agent-container";
 
     // Main action button
     button = document.createElement("button");
