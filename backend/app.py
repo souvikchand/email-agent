@@ -3,11 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import json
 
-from services.llm import generate, get_llm, get_tasks_grammar
+from services.llm import generate, get_llm, get_tasks_grammar, get_reply_grammar
 from prompts.summarize import build_summary_prompt
 from utils.email_cleaner import remove_signature, remove_reasoning, clean_thread
 from utils.email_cleaner import extract_json
 from prompts.task import TASK_PROMPT
+from prompts.reply import REPLY_PROMPT
 
 app = FastAPI()
 
@@ -96,4 +97,25 @@ async def extract_tasks(data: dict):
                 "error": "Failed to extract tasks from LLM response"
             }
         )
+
+
+@app.post("/reply")
+async def reply(data: dict):
+    print("\n========== REPLY REQUEST ==========")
+    print(data)
+    prompt = REPLY_PROMPT.format(
+        subject=data["subject"],
+        thread=data["thread"],
+        instruction=data["instruction"]
+        
+    )
+    print("\n========== REPLY PROMPT ==========")
+    print(prompt)
+    result = generate(prompt,max_tokens=500,temperature=0.3,top_p=0.9,
+                      stop=None)
+    print("\n========== REPLY RESULT ==========")
+    print(result)
+    return {
+        "reply": result
+    }
     

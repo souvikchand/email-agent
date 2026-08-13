@@ -39,3 +39,68 @@ async function showTasks() {
         displayError(err);
     }
 }
+
+async function showReply() {
+    // if (state.reply.result) {
+    //     displayResponse(state.reply.result);
+    //     return;
+    // }
+
+    showLoading();
+    displayReplyUI();
+
+    // try {
+    //     const response = await getReply(state.currentEmail);
+    //     state.reply.result = response.reply;
+    //     displayResponse(response.reply);
+    // } catch (error) {
+    //     console.error("Reply error:", error);
+    //     displayResponse("Failed to generate reply.");
+    // }
+}
+
+// ============== working ==================
+// async function generateReply() {
+//     const instruction = state.reply.instruction.trim();
+//     if (!instruction) {
+//         return;
+//     }
+//     showLoading();
+
+//     try {
+//         const response = await getReply(
+//             state.currentEmail,
+//             instruction
+//         );
+//         state.reply.result = response.reply;
+//         displayReplyResult(response.reply);
+
+//     } catch (error) {
+//         console.error("Reply generation failed:", error);
+//         displayReplyResult("Failed to generate reply.");
+//     }
+// }
+// ============= working =================
+
+async function generateReply() {
+    const instruction = state.reply.instruction.trim();
+    if (!instruction) {
+        return;
+    }
+    // Make sure state contains the email currently visible in Gmail
+    // await updateCurrentEmail();
+    await ensureCurrentEmail();
+    showLoading();
+    try {
+        const response = await getReply(
+            state.currentEmail,
+            instruction
+        );
+        state.reply.result = response.reply;
+        displayReplyResult(response.reply);
+
+    } catch (error) {
+        console.error("Reply generation failed:", error);
+        displayReplyResult("Failed to generate a response.");
+    }
+}

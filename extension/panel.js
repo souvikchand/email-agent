@@ -112,3 +112,96 @@ function renderTaskTable(tasks, count) {
     content.appendChild(table);
     showPanel();
 }
+
+function displayReplyUI() {
+    const panel = createSidePanel();
+    panel.querySelector("#cyline-content").innerHTML = `
+        <div class="cyline-reply">
+
+            <div class="cyline-reply-title">
+                Reply Assistant
+            </div>
+
+            <div class="cyline-reply-subtitle">
+                Ask a question about this email or tell me what to write.
+            </div>
+
+            <textarea
+                id="reply-instruction"
+                class="cyline-reply-input"
+                placeholder="e.g. Write a polite confirmation..."
+            ></textarea>
+
+            <button id="reply-generate" class="cyline-generate-btn">
+                Generate
+            </button>
+
+        </div>
+    `;
+
+    const textarea =
+        panel.querySelector("#reply-instruction");
+
+    const button =
+        panel.querySelector("#reply-generate");
+
+    textarea.addEventListener("input", () => {
+        state.reply.instruction = textarea.value;
+    });
+
+    button.addEventListener("click", async () => {
+        await generateReply();
+    });
+    showPanel();
+}
+
+
+function displayReplyResult(result) {
+    const panel = createSidePanel();
+    panel.querySelector("#cyline-content").innerHTML = `
+        <div class="cyline-reply">
+
+            <div class="cyline-reply-title">
+                Reply Assistant
+            </div>
+
+            <div class="cyline-reply-subtitle">
+                Ask a question or generate a reply from the email context.
+            </div>
+
+            <textarea
+                id="reply-instruction"
+                class="cyline-reply-input"
+            >${state.reply.instruction}</textarea>
+
+            <button id="reply-generate" class="cyline-generate-btn">
+                Generate
+            </button>
+
+            <div class="cyline-response-label">
+                Response
+            </div>
+
+            <div class="cyline-response-card">
+            ${result}
+            </div>
+
+        </div>
+    `;
+
+    const textarea =
+        panel.querySelector("#reply-instruction");
+
+    const button =
+        panel.querySelector("#reply-generate");
+
+    textarea.addEventListener("input", () => {
+        state.reply.instruction = textarea.value;
+    });
+
+    button.addEventListener("click", async () => {
+        await generateReply();
+    });
+
+    showPanel();
+}

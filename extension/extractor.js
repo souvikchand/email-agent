@@ -98,3 +98,10 @@ function extractEmail(emailNode) {
         quoted: ""
     };
 }
+
+function extractEmailId() {
+    const hash = window.location.hash;
+    if (!hash) return null;
+    const parts = hash.split("/");
+    return parts[parts.length - 1] || null;
+}

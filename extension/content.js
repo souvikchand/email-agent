@@ -11,10 +11,14 @@ const THREAD_SELECTORS = [
 const state = {
     currentAction:"summary",
     currentEmail:null,
+    currentEmailID:null,
+    reply:{
+        instruction:"",
+        result:null
+    },
     cache:{
         summary:null,
         tasks:null,
-        reply:null
     }
 };
 
@@ -140,25 +144,136 @@ async function runCurrentAction() {
             break;
 
         case "reply":
-            // await showReply();
+            await showReply();
             break;
     }
 }
 
+// async function onActionButtonClick() {
+//     if (!state.currentEmail) {
+//         const email = {
+//             "subject":extractSubject(),
+//             "thread": extractThread(),
+//         }
+//     }
+//     state.currentEmail = email;
+//     // Reset cache for the newly opened email
+//     state.cache = {
+//         summary: null,
+//         tasks: null,
+//         reply: null
+//     };
+//     await runCurrentAction();
+// }
+
+// =================working====================
+// async function onActionButtonClick() {
+//     const threadId = extractEmailId();
+//     // const threadId = extractEmailId();
+
+//     console.log("========== ACTION CLICK ==========");
+//     console.log("URL:", window.location.href);
+//     console.log("Extracted thread:", threadId);
+//     console.log("Stored thread:", state.currentThreadId);
+//     console.log("Same thread:", state.currentThreadId === threadId);
+//     if (
+//         !state.currentEmail ||
+//         state.currentThreadId !== threadId
+//     ) {
+//         state.currentThreadId = threadId;
+//         state.currentEmail = {
+//             subject: extractSubject(),
+//             thread: extractThread()
+//         };
+//         state.cache = {
+//             summary: null,
+//             tasks: null,
+//             reply: null
+//         };
+//     }
+//     await runCurrentAction();
+// }
+// ================== working =========================
+
 async function onActionButtonClick() {
-    const email = {
-        "subject":extractSubject(),
-        "thread": extractThread(),
-    }
-    state.currentEmail = email;
-    // Reset cache for the newly opened email
-    state.cache = {
-        summary: null,
-        tasks: null,
-        reply: null
-    };
+    // await updateCurrentEmail();
+    await ensureCurrentEmail();
     await runCurrentAction();
 }
+
+async function ensureCurrentEmail() {
+    const threadId = extractEmailId();
+    if (
+        state.currentEmail &&
+        state.currentThreadId === threadId
+    ) {
+        return;
+    }
+    state.currentThreadId = threadId;
+    state.currentEmail = {
+        subject: extractSubject(),
+        thread: extractThread()
+    };
+    state.cache = {
+        summary: null,
+        tasks: null
+    };
+    state.reply = {
+        instruction: "",
+        result: null
+    };
+}
+
+// async function updateCurrentEmail() {
+//     const threadId = extractEmailId();
+//     if (
+//         !state.currentEmail ||
+//         state.currentThreadId !== threadId
+//     ) {
+//         console.log("New thread detected:", threadId);
+//         state.currentThreadId = threadId;
+//         state.currentEmail = {
+//             subject: extractSubject(),
+//             thread: extractThread()
+//         };
+
+//         state.cache = {
+//             summary: null,
+//             tasks: null
+//         };
+
+//         state.reply = {
+//             instruction: "",
+//             result: null
+//         };
+//     }
+// }
+
+// async function waitForNewEmail() {
+//     const oldThread = state.currentEmail?.thread;
+//     for (let i = 0; i < 30; i++) {
+//         const subject = extractSubject();
+//         const thread = extractThread();
+//         if (
+//             subject &&
+//             thread &&
+//             thread.length > 0 &&
+//             JSON.stringify(thread) !== JSON.stringify(oldThread)
+//         ) {
+//             console.log("New email content detected.");
+//             return {
+//                 subject: subject,
+//                 thread: thread
+//             };
+//         }
+//         await new Promise(resolve => setTimeout(resolve, 100));
+//     }
+//     console.warn("Timed out waiting for new email content.");
+//     return {
+//         subject: extractSubject(),
+//         thread: extractThread()
+//     };
+// }
 
 //====observers
 const observer = new MutationObserver(() => {

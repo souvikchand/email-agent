@@ -146,3 +146,78 @@
 #taskTable th {
     background:#f5f5f5;
 }
+
+.cyline-generate-btn {
+    width: 100%;
+    padding: 10px 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #1a73e8;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease,
+                transform 0.05s ease;
+}
+
+.cyline-generate-btn:hover {
+    background: #1765c1;
+}
+
+.cyline-generate-btn:active {
+    transform: scale(0.98);
+}
+
+.cyline-generate-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.cyline-reply-input {
+    width: 100%;
+    min-height: 100px;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #dadce0;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    resize: vertical;
+    outline: none;
+}
+
+.cyline-reply-input:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 1px #1a73e8;
+}
+
+.cyline-reply-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.cyline-reply-subtitle {
+    font-size: 12px;
+    color: #5f6368;
+    margin-bottom: 12px;
+}
+
+.cyline-response-label {
+    margin-top: 18px;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.cyline-response-card {
+    padding: 6px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #f8f9fa;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}

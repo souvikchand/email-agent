@@ -51,3 +51,22 @@ async function getTasks(emailData) {
 
 }
 
+async function getReply(email, instruction) {
+    const response = await fetch("http://127.0.0.1:8000/reply", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            subject: email.subject,
+            thread: email.thread,
+            instruction: instruction
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error(`Reply request failed: ${response.status}`);
+    }
+
+    return await response.json();
+}

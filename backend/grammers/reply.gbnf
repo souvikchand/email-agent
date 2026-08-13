@@ -1,0 +1,19 @@
+root ::= object
+
+object ::= "{" ws key-reply ws ":" ws string ws "}"
+
+key-reply ::= q "reply" q
+
+string ::= q chars q
+
+chars ::= "" | char chars
+
+char ::= [^"\\] | "\\" escape
+
+escape ::= ["\\/bfnrt] | "u" hex hex hex hex
+
+hex ::= [0-9a-fA-F]
+
+q ::= "\""
+
+ws ::= [ \t\n\r]*
